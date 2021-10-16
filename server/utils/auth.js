@@ -33,6 +33,8 @@ module.exports = {
     // return updated request object
     return req
   },
+
+  // export to resolvers.js
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
 
