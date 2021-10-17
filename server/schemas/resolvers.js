@@ -17,6 +17,33 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Cannot find a user with this id!')
+        },
+    },
+    
+    Mutation: {
+        // Error handling in front-end `{error && <div>Signup failed.</div>}` [when using useMutation(addUser)]
+        addUser: async(parent, args) => {
+            const user = await User.create(args);
+            const token = signToken(user);
+
+            return { token, user }
+        }, 
+
+        login: async(parent, {email, password}) => {
+            const user = await User.findOne({ email });
+
+            if (!user) {
+                throw new AuthenticationError("Incorrect credentials. Retry or signup!")
+            }
+
+            const correctPw = await user.isCorrectPassword(password);
+
+            if (!correctPw) {
+                throw new AuthenticationError('Incorrect credentials. Retry or signup!')
+            }
+
+            const token = signToken(user)
+            return { token, user };
         }
     }
 }
