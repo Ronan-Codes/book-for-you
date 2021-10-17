@@ -44,7 +44,39 @@ const resolvers = {
 
             const token = signToken(user)
             return { token, user };
-        }
+        },
+
+        saveBook: async (parent, {book}, context) => {
+            if(context.user) {
+                // const book = await Book.create({...args, username: context.user.username})
+
+                const updatedUser =  await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { savedBooks: book } },
+                    // $addToSet prevents duplicate entries, like in $push
+                    { new: true, runValidators: true }
+                )
+
+                return updatedUser;
+            }
+
+            throw new AuthenticationError('You must be logged in to use this feature.')
+        },
+
+        deleteBook: async (parent, {bookId}, context) => {
+            if(context.user) {
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: {bookId: bookId} } },
+                    { new: true } 
+                    // runValidators unnecessary since deleting
+                )
+
+                return updatedUser
+            }
+
+            throw new AuthenticationError('You must be logged in to use this feature.')
+        } 
     }
 }
 
