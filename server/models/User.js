@@ -31,6 +31,7 @@ const userSchema = new Schema(
     },
   }
 );
+// virtual used to get bookCount
 
 // hash user password
 userSchema.pre('save', async function (next) {
