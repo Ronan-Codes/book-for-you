@@ -22,7 +22,7 @@ const resolvers = {
             }
 
             throw new AuthenticationError('Cannot find a user with this id!')
-        },
+        }
     },
     
     Mutation: {
