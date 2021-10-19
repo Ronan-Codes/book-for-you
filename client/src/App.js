@@ -17,18 +17,43 @@ const httpLink = createHttpLink({
   uri: '/graphql',
 });
 
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token? `Bearer ${token}` : '',
+    }
+  }
+})
+
+// ApolloClient() constructor to instantiate the Apollo Client and create the connection to the API endpoint
+  // also instantiates a new cache
+    // authLink is added so every request retrieves the token and sets the request headers before making the request to the API.
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+})
+
+
 function App() {
   return (
-    <Router>
-      <>
-        <Navbar />
-        <Switch>
-          <Route exact path='/' component={SearchBooks} />
-          <Route exact path='/saved' component={SavedBooks} />
-          <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
-        </Switch>
-      </>
-    </Router>
+    // enable entire app to interact with ApolloClient instance 
+    <ApolloProvider client={client}>
+      
+      {/* makes all child components aware of all client-side routing */}
+      <Router>
+        <>
+          <Navbar />
+          <Switch>
+            <Route exact path='/' component={SearchBooks} />
+            <Route exact path='/saved' component={SavedBooks} />
+            <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
+          </Switch>
+        </>
+      </Router>
+
+    </ApolloProvider>
   );
 }
 
