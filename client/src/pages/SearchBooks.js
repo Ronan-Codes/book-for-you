@@ -14,7 +14,7 @@ import { SAVE_BOOK } from '../../src/utils/mutations';
 // 
 
 const SearchBooks = () => {
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  const [saveBook] = useMutation(SAVE_BOOK);
 
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
@@ -146,7 +146,7 @@ const SearchBooks = () => {
                         : 'Save this Book!'}
                     </Button>
                   )}
-                  {error && alert(error)}
+                  {/* {error && alert(error)} */}
                 </Card.Body>
               </Card>
             );

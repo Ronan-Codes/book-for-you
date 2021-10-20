@@ -13,7 +13,7 @@ import { REMOVE_BOOK } from '../utils/mutations';
 const SavedBooks = () => {
   // const loggedIn = Auth.loggedIn();
 
-  const [ removeBook, {error}] = useMutation(REMOVE_BOOK);
+  const [ removeBook] = useMutation(REMOVE_BOOK);
   // use object destructuring to extract `data` from the `useQuery` Hook's response and rename it `userData` to be more descriptive 
   const { loading, data } = useQuery(GET_ME);
   const userData = data?.me || {}
@@ -76,7 +76,7 @@ const SavedBooks = () => {
     try {
       // const response = await deleteBook(bookId, token);
       await removeBook({
-        variables: bookId
+        variables: {bookId: bookId}
       })
 
       // if (!response.ok) {
@@ -122,7 +122,7 @@ const SavedBooks = () => {
                   <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
                     Delete this Book!
                   </Button>
-                  {error && alert(error)}
+                  {/* {error && alert(error)} */}
                 </Card.Body>
               </Card>
             );
