@@ -19,7 +19,7 @@ const SignupForm = () => {
   const [showAlert, setShowAlert] = useState(false);
 
   // ADD_USER 
-  const [addUser] = useMutation(ADD_USER);
+  const [addUser, { error }] = useMutation(ADD_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -44,7 +44,7 @@ const SignupForm = () => {
       // if (!response.ok) {
       //   throw new Error('something went wrong!');
       // }
-      
+      alert("here")
       Auth.login(data.addUser.token)
       console.log(data)
     } catch (e) {
@@ -112,7 +112,7 @@ const SignupForm = () => {
           variant='success'>
           Submit
         </Button>
-        {/* {error && alert(error)} */}
+        {error && alert(error)}
       </Form>
     </>
   );
