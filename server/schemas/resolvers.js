@@ -13,9 +13,11 @@ const resolvers = {
 
         // get a single user by either their id or their username
         me: async (parent, args, context) => {
+            console.log(context)
             if(context.user) {
                 const foundUser = await User.findOne({
-                    $or: [{ _id: context.user._id }, { username: context.user.username }]
+                    // $or: [{ _id: context.user._id }, { username: context.user.username }]
+                    _id: context.user._id
                 }).select('-__v -password')
 
                 return foundUser; 
